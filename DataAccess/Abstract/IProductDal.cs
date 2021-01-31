@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    interface IProductDal
+  public  interface IProductDal
     {
         List<Product> GetAll();
 
