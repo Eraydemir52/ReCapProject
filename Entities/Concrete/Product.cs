@@ -16,8 +16,8 @@ namespace Entities.Concrete
         public string Description { get; set; }
 
 
-
-
+        public int CategoryId { get; set; }
+        public decimal UnitPrice { get; set; } //para birimi
 
 
 

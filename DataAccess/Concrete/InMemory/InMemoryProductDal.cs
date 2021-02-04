@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -32,6 +33,11 @@ namespace DataAccess.Concrete.InMemory
             _products.Remove(productTODelete);
         }
 
+        public Product Get(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Product> GetAll()
         {
             return _products;
@@ -42,13 +48,12 @@ namespace DataAccess.Concrete.InMemory
             return _products.Where(p => p.Id == product.Id).ToList();
         }
 
-        
-
-        public void GetById(Product product)
+        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
         {
-           
+            throw new NotImplementedException();
         }
 
+       
         public void Update(Product product)
         {
             Product productToUpdate = _products.SingleOrDefault(Y => Y.Id == product.Id);
@@ -59,9 +64,6 @@ namespace DataAccess.Concrete.InMemory
             productToUpdate.ModelYear = product.ModelYear;
         }
 
-        void IProductDal.GetAll(Product product)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

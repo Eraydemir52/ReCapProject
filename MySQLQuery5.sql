@@ -1,0 +1,1 @@
+﻿insert into My(Car,Brands,Colors,BrandId,ColorId) values ('Hatcback','BMW','Blue',1,1)
