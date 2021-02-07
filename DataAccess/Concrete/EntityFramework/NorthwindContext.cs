@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccess.Concrete.EntityFramework
+namespace DataAccess.Concrete.EntityFrameworkUse
 {
-    class CarProjectContext:DbContext
+  public  class NorthwindContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder)
         {
-            dbContextOptionsBuilder.UseSqlServer(@"Server:(localdb)\mssqllocaldb;Database=CarProject;Trusted_Connection=true");
+            dbContextOptionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database= Northwind;Trusted_Connection=true");
         }
 
         public DbSet<Product> Products { get; set; }
@@ -18,6 +18,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Color> Colors { get; set; }
         public DbSet<Brand> Brands { get; set; }
 
+        
 
 
     }
