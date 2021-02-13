@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constans;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -8,33 +10,38 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class ProductManager : IProductService
-    {
-        IProductDal _productDal;
+    //public class ProductManager : IProductService
+    //{
+    //    IProductDal _productDal;
 
-        public ProductManager(IProductDal productDal)
-        {
-            _productDal = productDal;
-        }
+    //    public IResult Add(Product product)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public List<Product> GetAll()
-        {
-            return _productDal.GetAll();
-        }
+    //    public IDataResult<List<Product>> GetAll()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public List<Product> GetByCategoryId(int categoryId)
-        {
-            return _productDal.GetAll(p => p.CategoryId == categoryId);
-        }
+    //    public IDataResult<List<Product>> GetByCategoryId(int categoryId)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public List<Product> GetByUnitPrice(decimal min, decimal max)
-        {
-            return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
-        }
+    //    public IDataResult<Product> GetById(int productId)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public List<ProductDetailDto> GetProductDetailDtos()
-        {
-            return _productDal.GetProductDetailDtos();
-        }
-    }
+    //    public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public IDataResult<List<ProductDetailDto>> GetProductDetailDtos()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

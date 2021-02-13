@@ -1,5 +1,6 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
+using Entities.Concrete;
 using System;
 
 namespace ConsoleUI
@@ -8,28 +9,95 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            TestProduct();
-
-          //  CategoryTest();
+            BrandTest();
+            CarTest();
+            ColorTest();
+            RentalTest();
+            UserTest();
 
         }
 
-        private static void CategoryTest()
+        private static void UserTest()
         {
-            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
-            foreach (var category in categoryManager.GetAll())
+            UserManager userManager = new UserManager(new EfUserDal());
+            var result = userManager.GetAll();
+            if (result.Success == true)
             {
-                Console.WriteLine(category.CategoryName);
+                foreach (var User in result.Data)
+                {
+                    Console.WriteLine(User.Id + "\\" + User.FirstName + "\\" + User.LastName + "\\" + User.Password + "\\" + User.Email);
+                }
             }
         }
 
-        private static void TestProduct()
+        private static void RentalTest()
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var product in productManager.GetProductDetailDtos())
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            rentalManager.Add(new Rental
             {
-                Console.WriteLine(product.ProductName+"\\"+product.CategoryName );
+                Id = 1,
+                CarId = 1,
+                RentDate = new DateTime(2020),
+                CustomerId = 1,
+                ReturnDate = new DateTime(2021)
+
+
+            }); ;
+        }
+
+        private static void ColorTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            var result = colorManager.GetAll();
+            if (result.Success == true)
+            {
+                foreach (var color in result.Data)
+                {
+                    Console.WriteLine(color.Id + "\\" + color.Name);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
             }
         }
+
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            carManager.Add(new Car
+            {
+                Id = 3,
+                DailyPrice = 100,
+                Name = "Skoda",
+                BrandId = 3,
+                ModelYear = 2020,
+                ColorId = 3,
+                Description = "Sıfır Ayarında"
+
+            });
+        }
+
+        private static void BrandTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            var result = brandManager.GetAll();
+
+            if (result.Success == true)
+            {
+                foreach (var brand in result.Data)
+                {
+                    Console.WriteLine("Brand Id : " + brand.Id + "\nBrand Name : " + brand.Name);
+
+                    Console.WriteLine("********************************");
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
     } 
 }

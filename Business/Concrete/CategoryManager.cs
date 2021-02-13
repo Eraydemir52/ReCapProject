@@ -7,26 +7,26 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class CategoryManager : ICategoryService
-    {
-        ICategoryDal _categoryDal;
+    //public class CategoryManager : ICategoryService
+    //{
+    //    ICategoryDal _categoryDal;
 
-        public CategoryManager(ICategoryDal categoryDal)
-        {
-            _categoryDal = categoryDal;
-        }
+    //    public CategoryManager(ICategoryDal categoryDal)
+    //    {
+    //        _categoryDal = categoryDal;
+    //    }
 
-        public List<Category> GetAll()
-        {
-           return _categoryDal.GetAll();
-        }
+    //    public List<Category> GetAll()
+    //    {
+    //       return _categoryDal.GetAll();
+    //    }
 
-        public Category GetById(int categoryId)
-        {
-            return _categoryDal.Get(x => x.CategoryId == categoryId);
+    //    public Category GetById(int categoryId)
+    //    {
+    //        return _categoryDal.Get(x => x.CategoryId == categoryId);
                
-        }
+    //    }
 
         
-    }
+    //}
 }
