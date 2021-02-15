@@ -1,2 +1,1 @@
-﻿select * from Brands
-insert into Brands(Name) values ('BMW')
+﻿insert into Brands (Name) values ('Mercedes')

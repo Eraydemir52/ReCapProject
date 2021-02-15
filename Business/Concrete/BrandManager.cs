@@ -23,11 +23,13 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.BrandNameInvalid);
             }
+            _brandal.Add(brand);
             return new SuccessResult(Messages.BrandAdded);
         }
 
         public IResult Delete(Brand brand)
         {
+            _brandal.Delete(brand);
             return new SuccessResult(Messages.BrandDeleted);
         }
 
@@ -36,8 +38,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandal.GetAll(), Messages.BrandsListed);
         }
 
+        public IDataResult<Brand> GetById(int id)
+        {
+            return new SuccessDataResult<Brand>(_brandal.Get(b => b.Id == id));
+        }
+
         public IResult Update(Brand brand)
         {
+            _brandal.Update(brand);
             return new SuccessResult(Messages.BrandsUpteted);
         }
     }

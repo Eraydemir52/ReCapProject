@@ -30,6 +30,12 @@ namespace Business.Constans
         public static string UserDeleted = "Kullanıcı silindi";
         public static string UserListed = " Kullanıcı listelendi";
         public static string UserUpteted = "Kullanıcı güncellendi";
+        public static string RentalUpteted = "Kiralama güncellendi";
+        public static string RentalDeleted = "Kiralama silindi";
+        public static string CustomerAdded = "Müşteri eklendi";
+        public static string CustomerDeleted = "Müşteri silindi";
+        public static string CustomerUpteted = "Müşteri güncellendi";
+        public static string CompanyNameInvalid = "Şirket ismi geçersiz en az (2<Şirket ismi)";
 
     }
 }

@@ -1,0 +1,1 @@
+﻿insert into Users (Email,FirstName,LastName,Password) values ('Sefayılmaz35@gmail.com','Sefa','Yılmaz','1232635625')
