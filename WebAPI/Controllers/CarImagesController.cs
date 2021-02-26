@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,6 +15,7 @@ namespace WebAPI.Controllers
     public class CarImagesController : ControllerBase
     {
         ICarImagesService _CarImagesService;
+      
 
         public CarImagesController(ICarImagesService carImagesService)
         {
@@ -41,30 +43,32 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("add")]
-        public IActionResult Add(CarImages carImages)
+        public IActionResult Add([FromForm] Image image, [FromForm] CarImages carImage)
         {
-            var result = _CarImagesService.Add(carImages);
+            var result = _CarImagesService.Add(image, carImage);
             if (result.Success)
             {
                 return Ok(result);
             }
-            return BadRequest(result);
 
+            return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult Update(CarImages carImages)
+        public IActionResult Update([FromForm] Image image, [FromForm] CarImages carImage)
         {
-            var result = _CarImagesService.Update(carImages);
+            var result = _CarImagesService.Update(image, carImage);
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
+
         [HttpPost("delete")]
-        public IActionResult Delete(CarImages carImages)
+        public IActionResult Delete([FromForm]Image image,[FromForm]CarImages carImages)
         {
-            var result = _CarImagesService.Delete(carImages);
+            var result = _CarImagesService.Delete(image,carImages);
             if (result.Success)
             {
                 return Ok(result);
