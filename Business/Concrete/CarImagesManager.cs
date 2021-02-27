@@ -26,7 +26,7 @@ namespace Business.Concrete
         public IResult Add(Image image,CarImages carImages)
         {
            IResult result= BusinessRule.Run(CheckImageLimit(carImages.CarId));
-            if (result !=null)
+            if (result!=null)
             {
                 return result;
             }
@@ -72,7 +72,7 @@ namespace Business.Concrete
         }
         private   IDataResult<CarImages> CreatFile(Image image,CarImages carImages)
         {
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");
+            string path = Environment.CurrentDirectory + "\\wwwroot" + "\\Images\\";//--imagesa ulaşmak için 
             if (image.Files==null)
             {
                 carImages.ImagePath = ("\\defult_img.png").Replace("\\", "/");
