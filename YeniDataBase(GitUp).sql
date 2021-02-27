@@ -7,6 +7,14 @@ CREATE TABLE Brands(
 	Id int PRIMARY KEY IDENTITY(1,1),
 	[Name] nvarchar(50),
 )
+CREATE TABLE [dbo].[CarImages] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [CarId]     INT            NULL,
+    [ImagePath] NVARCHAR (MAX) NULL,
+    [Date]      DATETIME       NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([CarId]) REFERENCES [dbo].[Cars] ([Id])
+)
 
 CREATE TABLE Cars(
 	Id int PRIMARY KEY IDENTITY(1,1),
