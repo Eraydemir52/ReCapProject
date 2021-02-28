@@ -15,106 +15,195 @@ namespace Business.Concrete
 {
     public class CarImagesManager : ICarImagesService
     {
-        ICarImagesDal _carImagesDal;
+        private ICarImagesDal _carImageDal;
 
-        public CarImagesManager(ICarImagesDal carImagesDal)
+        public CarImagesManager(ICarImagesDal carImageDal)
         {
-            _carImagesDal = carImagesDal;
+            _carImageDal = carImageDal;
         }
 
-        [ValidationAspect(typeof(BrandValidator))]
-        public IResult Add(Image image,CarImages carImages)
+        public IDataResult<List<CarImages>> GetAll()
         {
-           IResult result= BusinessRule.Run(CheckImageLimit(carImages.CarId));
-            if (result!=null)
+            return new SuccessDataResult<List<CarImages>>(_carImageDal.GetAll());
+        }
+
+       
+
+        public IDataResult<List<CarImages>> GetById(int id)
+        {
+            return GetByIdMetod(id);
+
+        }
+
+       
+
+        public IResult Add(Image image, CarImages carImage)
+        {
+
+            IResult result = BusinessRule.Run(CheckLimetedError(carImage.CarId));
+            if (result != null)
             {
                 return result;
             }
 
-            var newImage = CreatFile(image, carImages).Data;
-            _carImagesDal.Add(newImage);
-            return new SuccessResult(Messages.CarImagesAdded);
-        }
-        public IDataResult<List<CarImages>> GetAll()
-        {
-            return new SuccessDataResult<List<CarImages>>(_carImagesDal.GetAll());
-        }
-
-        public IDataResult<CarImages> GetById(int id)
-        {
-            return new SuccessDataResult<CarImages>(_carImagesDal.Get(p => p.Id == id));
+            return AddMetod(image, carImage);
         }
 
       
 
-        public IResult Update(Image image,CarImages carImages)
+        public IResult Delete(Image ımage,CarImages carImage)
         {
-            var newImage = UpdateFile(image, carImages).Data;
-            _carImagesDal.Update(carImages);
-            return new SuccessResult(Messages.CarImagesUpdated);
+            return DeleteMetod(carImage);
         }
 
-        public IResult Delete(Image ımage,CarImages carImages)
-        {
-            DeleteFile(carImages);
-            _carImagesDal.Delete(carImages);
-            return new SuccessResult(Messages.CarImagesDeleted);
+       
 
-        }
-        private IResult CheckImageLimit(int id)
+        public IResult Update(Image image, CarImages carImage)
         {
-            var result = _carImagesDal.GetAll(p => p.CarId == id).Count;
+            return UpdateMetod(image, carImage);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+      //*****************METODLAR********************************//
+      
+
+        private IResult CheckLimetedError(int id)
+        {
+            var result = _carImageDal.GetAll(p => p.CarId == id).Count;
             if (result>=5)
             {
                 return new ErrorResult(Messages.ImageLimitError);
             }
             return new SuccessResult();
         }
-        private   IDataResult<CarImages> CreatFile(Image image,CarImages carImages)
+        private IResult AddMetod(Image image, CarImages carImage)
         {
-            string path = Environment.CurrentDirectory + "\\wwwroot" + "\\Images\\";//--imagesa ulaşmak için 
-            if (image.Files==null)
-            {
-                carImages.ImagePath = ("\\defult_img.png").Replace("\\", "/");
-            }
-            else
-            {
-                string extension = Path.GetExtension(image.Files.FileName);
-                string guid = Guid.NewGuid().ToString() + DateTime.Now.Millisecond + "_" + DateTime.Now.Hour + extension + "_" + DateTime.Now.Minute;
+            string path = Environment.CurrentDirectory + "\\wwwroot" + "\\Images\\";
+            string randomName = null;
+            string type = null;
 
-                using (FileStream fileStream =System.IO.File.Create(path+guid+extension))
+
+            if (image.Files != null && image.Files.Length > 0)
+            {
+                randomName = Guid.NewGuid().ToString();
+                type = Path.GetExtension(image.Files.FileName);
+
+                if (type != ".jpeg" && type != ".png" && type != ".jpg")
                 {
-                    image.Files?.CopyTo(fileStream);
-                    fileStream.Flush();
-                    carImages.ImagePath = (guid + extension).Replace("\\", "/");
+                    return new ErrorResult("Wrong file type.");
                 }
 
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
+                using (FileStream fs = File.Create(path + randomName + type))
+                {
+                    image.Files.CopyTo(fs);
+                    fs.Flush();
+                    carImage.ImagePath = (path + randomName + type).Replace("\\", "/");
+                    carImage.Date = DateTime.Now;
+                }
 
+                _carImageDal.Add(carImage);
+                return new SuccessResult("Car image added");
             }
-            carImages.Date = DateTime.Now;
-            return new SuccessDataResult<CarImages>(carImages);
+
+            return new ErrorResult("File doesn't exists.");
         }
-        private IResult DeleteFile(CarImages carImages)
+        private IResult DeleteMetod(CarImages carImage)
         {
-            var result = _carImagesDal.Get(c => c.Id == carImages.Id);
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images\");
-            try
+            var images = _carImageDal.Get(c => c.Id == carImage.Id);
+            if (images == null)
             {
-                File.Delete(path + result.ImagePath);
+                return new ErrorResult("Image not found");
             }
-            catch ( Exception)
-            {
 
-                return new ErrorResult();
+            var path = "wwwroot" + images.ImagePath;
+
+            if (File.Exists(path.Replace("/", "\\")))
+            {
+                File.Delete(path.Replace("/", "\\"));
             }
-            return new SuccessResult();
+            _carImageDal.Delete(carImage);
+            return new SuccessResult("Image was deleted successfully");
         }
-        private IDataResult<CarImages> UpdateFile(Image image,CarImages carImages)
+        private IResult UpdateMetod(Image image, CarImages carImage)
         {
-            DeleteFile(carImages);
-            var newImage = CreatFile(image, carImages).Data;
-            return new SuccessDataResult<CarImages>(newImage);
+            var isImage = _carImageDal.Get(c => c.Id == carImage.Id);
+            if (isImage == null)
+            {
+                return new ErrorResult("Image not found");
+            }
+
+            var imagePathh = "wwwroot" + isImage.ImagePath;
+
+            if (File.Exists(imagePathh.Replace("/", "\\")))
+            {
+                File.Delete(imagePathh.Replace("/", "\\"));
+            }
+
+            var path = "\\Images\\";
+            var currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
+            string randomName = null;
+            string type = null;
+
+            if (image.Files != null && image.Files.Length > 0)
+            {
+                randomName = Guid.NewGuid().ToString();
+                type = Path.GetExtension(image.Files.FileName);
+
+                if (!Directory.Exists(currentDirectory + path))
+                {
+                    Directory.CreateDirectory(currentDirectory + path);
+                }
+
+                if (type != ".jpeg" && type != ".png" && type != ".jpg")
+                {
+                    return new ErrorResult("Wrong file type.");
+                }
+
+                using (FileStream fs = System.IO.File.Create(currentDirectory + path + randomName + type))
+                {
+                    image.Files.CopyTo(fs);
+                    fs.Flush();
+                    carImage.ImagePath = (path + randomName + type).Replace("\\", "/");
+                    carImage.Date = isImage.Date;
+                }
+
+                _carImageDal.Update(carImage);
+                return new SuccessResult("Car image updated");
+            }
+            return new ErrorResult("File doesn't exists");
         }
+        private IDataResult<List<CarImages>> GetByIdMetod(int id)
+        {
+            var result = _carImageDal.GetAll(i => i.CarId == id);
+
+            if (result.Count > 0)
+            {
+                return new SuccessDataResult<List<CarImages>>(result);
+            }
+
+            List<CarImages> images = new List<CarImages>();
+            images.Add(new CarImages() { CarId = 0, Id = 0, Date = DateTime.Now, ImagePath = "/images/car-rent.png" });
+
+            return new SuccessDataResult<List<CarImages>>(images);
+        }
+
+
+
+
     }
 }

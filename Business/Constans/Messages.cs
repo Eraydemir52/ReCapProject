@@ -36,9 +36,10 @@ namespace Business.Constans
         public static string CustomerDeleted = "Müşteri silindi";
         public static string CustomerUpteted = "Müşteri güncellendi";
         public static string CompanyNameInvalid = "Şirket ismi geçersiz en az (2<Şirket ismi)";
-        internal static string CarImagesAdded="Araba resmi eklendi ";
-        internal static string CarImagesUpdated="Arabanın resimi güncellendi";
-        internal static string CarImagesDeleted="Arabanın resimi silindi";
-        internal static string ImageLimitError="Resim limit aşımı";
+        public static string CarImagesAdded="Araba resmi eklendi ";
+        public static string CarImagesUpdated="Arabanın resimi güncellendi";
+        public static string CarImagesDeleted="Arabanın resimi silindi";
+        public static string ImageLimitError="Resim limit aşımı";
+       
     }
 }
