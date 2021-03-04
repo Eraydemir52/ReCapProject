@@ -1,10 +1,11 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
+using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccess.Concrete.EntityFrameworkUse
+namespace DataAccess.Concrete.EntityFramework
 {
   public  class NorthwindContext : DbContext
     {
@@ -23,6 +24,10 @@ namespace DataAccess.Concrete.EntityFrameworkUse
         public DbSet<Rental> Rentals { get; set; }
 
         public DbSet<CarImages> CarImages { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+
 
 
     }
